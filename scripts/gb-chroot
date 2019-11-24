@@ -1,0 +1,19 @@
+#!/sbin/openrc-run
+
+start() {
+        for i in $BOOT_CHROOT
+        do
+            ebegin "Mounting chroot $i"
+            gb-mount m $i
+            eend $?
+        done
+}
+
+stop() {
+        for i in $(cd  ${CHROOT_TOP}; ls -d */ | cut -f1 -d'/')
+        do
+            ebegin "Unmounting chroot $i"
+            gb-mount u $i
+            eend $?
+        done
+}

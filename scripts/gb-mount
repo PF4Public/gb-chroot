@@ -1,0 +1,74 @@
+#!/bin/bash
+
+source /etc/init.d/functions.sh
+source /etc/conf.d/gb-chroot
+
+mount_it()
+{
+    ebegin "Mounting chroot directories in $2"
+    mount --types proc /proc $CHROOT_TOP/$2/proc
+    mount --rbind /sys $CHROOT_TOP/$2/sys
+    mount --rbind /dev $CHROOT_TOP/$2/dev
+    mount -o bind /tmp $CHROOT_TOP/$2/tmp
+    mount -o bind /var/cache/binpkgs/$2 $CHROOT_TOP/$2/var/cache/binpkgs
+    mount -o bind /var/cache/distfiles $CHROOT_TOP/$2/var/cache/distfiles
+    mount -o bind /var/db/repos/gentoo $CHROOT_TOP/$2/var/db/repos/gentoo
+    mount -o bind /etc/portage/repos.conf $CHROOT_TOP/$2/etc/portage/repos.conf
+    mount -o bind /var/lib/layman $CHROOT_TOP/$2/var/lib/layman
+    mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none $CHROOT_TOP/$2/run
+    eend $? "An error occured while attempting to mount chroot directories"
+}
+
+unmount_it()
+{
+    ebegin "Unmounting chroot directories in $2"
+    umount -fR $CHROOT_TOP/$2/dev
+    umount -fR $CHROOT_TOP/$2/sys
+    umount -f $CHROOT_TOP/$2/proc
+    umount -f $CHROOT_TOP/$2/tmp
+    umount -f $CHROOT_TOP/$2/var/cache/binpkgs
+    umount -f $CHROOT_TOP/$2/var/cache/distfiles
+    umount -f $CHROOT_TOP/$2/var/db/repos/gentoo
+    umount -f $CHROOT_TOP/$2/etc/portage/repos.conf
+    umount -f $CHROOT_TOP/$2/var/lib/layman
+    umount -f $CHROOT_TOP/$2/run
+    eend $? "An error occured while attempting to unmount chroot directories"
+}
+
+(
+    flock -x -w 60 200
+
+    if [ ! -e $RUN_DIR/$2 ]
+    then
+        touch $RUN_DIR/$2
+    fi
+
+    COUNT=$(<$RUN_DIR/$2)
+    echo "count: $COUNT"
+    if [ -z $COUNT ]
+    then
+        COUNT=0
+    fi
+
+    if [ $1 = "m" ]
+    then
+        if [ $COUNT -lt 1 ]
+        then
+            mount_it
+        fi
+        ((COUNT=COUNT+1))
+        echo "$COUNT" > $RUN_DIR/$2
+    else
+        if [ $COUNT -le 1 ]
+        then
+            unmount_it
+        fi
+        ((COUNT=COUNT-1))
+        if [ $COUNT -lt 1 ]
+        then
+            COUNT=0
+        fi
+        echo "$COUNT" > $RUN_DIR/$2
+    fi
+
+) 200>$RUN_DIR/$2.lock

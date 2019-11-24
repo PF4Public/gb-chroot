@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source /etc/init.d/functions.sh
+
+ebegin "emerge update"
+emerge --keep-going=y --update --deep --changed-use --with-bdeps=y @world 
+eend $? "Update failed"
+
+ebegin "emerge depclean"
+emerge --depclean
+eend $? "Depclean failed"
+
+ebegin "eclean packages"
+eclean packages
+eend $? "Clean packages failed"

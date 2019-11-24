@@ -1,0 +1,77 @@
+#!/bin/bash
+
+source /etc/init.d/functions.sh
+source /etc/conf.d/gb-chroot
+
+#TODO check if exists
+einfo "Creating $CHROOT_TOP/$1"
+mkdir $CHROOT_TOP/$1
+
+#TODO implement downloading + gpg checking
+ebegin "Unpacking $(ls $CHROOT_TOP/*$2-[0-9]*)"
+(
+    cd $CHROOT_TOP/$1
+    tar xpf $CHROOT_TOP/*$2-[0-9]* --xattrs-include='*.*' --numeric-owner
+)
+eend $?
+
+ebegin "Cleaning /dev"
+(
+    cd $CHROOT_TOP/$1/dev
+    rm -rf * .keep*
+)
+eend $?
+
+einfo "Copying template make.conf"
+(
+    cp -pf ../templates/make.conf $CHROOT_TOP/$1/etc/portage
+    cp -pf ../templates/make.conf.chroot $CHROOT_TOP/$1/etc/portage/make.conf.local
+)
+
+einfo "Creating repos.conf"
+(
+    mkdir $CHROOT_TOP/$1/etc/portage/repos.conf
+)
+
+einfo "Copying resolv.conf"
+(
+    cp -pf --dereference /etc/resolv.conf $CHROOT_TOP/$1/etc/
+)
+
+einfo "Creating layman directory"
+(
+    mkdir $CHROOT_TOP/$1/var/lib/layman
+)
+
+einfo "Updating /etc/profile"
+(
+    echo \"PS1="($1) \${PS1}"\" >> $CHROOT_TOP/$1/etc/profile
+)
+
+einfo "Copying timezone information"
+(
+    cp -pf /etc/timezone /etc/localtime $CHROOT_TOP/$1/etc/
+)
+
+einfo "Copying /etc/locale.gen"
+(
+    cp -pf /etc/locale.gen $CHROOT_TOP/$1/etc/
+)
+
+ebegin "Generating locales"
+(
+    gb-enter $1 locale-gen
+)
+eend $?
+
+einfo "Copying misc /etc files"
+(
+    cp -pf /etc/passwd /etc/shadow /etc/group /etc/gshadow /etc/hosts /
+        $CHROOT_TOP/$1/etc/
+)
+
+ewarn "Don't forget to:"
+ewarn "edit $CHROOT_TOP/$1/etc/portage/make.conf.local"
+ewarn "select target's profile with: 'gb-enter $1 eselect profile'"
+ewarn "select chroot locale: 'gb-enter $1 eselect locale'"
+ewarn "send /etc/portage from target into this chroot"

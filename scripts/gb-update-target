@@ -1,0 +1,23 @@
+#!/bin/bash
+
+source /etc/init.d/functions.sh
+
+ebegin "emerge --sync"
+emerge --sync > /dev/null
+eend $? "Sync failed"
+
+ebegin "emerge update"
+emerge --keep-going=y --update --deep --changed-use --binpkg-changed-deps=y @world
+eend $? "Update failed"
+
+ebegin "emerge depclean"
+emerge --depclean --with-bdeps=n --exclude="sys-kernel/linux-image"
+eend $? "Depclean failed"
+
+ebegin "eclean packages"
+eclean packages
+eend $? "Clean packages failed"
+
+ebegin "eclean distfiles"
+eclean distfiles
+eend $? "Clean distfiles failed"

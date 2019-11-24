@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source /etc/init.d/functions.sh
+
+rc-service rsyncd stop
+
+ebegin "emerge --sync"
+emerge --sync > /dev/null
+eend $? "Sync failed"
+
+ebegin "emerge update"
+emerge --keep-going=y --update --deep --changed-use --with-bdeps=y @world
+eend $? "Host update failed"
+
+ebegin "emerge depclean"
+emerge --depclean
+eend $? "Host depclean failed"
+
+ebegin "gb-all"
+gb-all gb-update-chroot
+eend $? "gb-all failed"
+
+ebegin "eclean distfiles"
+eclean distfiles
+eend $? "Host distfiles failed"
+
+rc-service rsyncd start

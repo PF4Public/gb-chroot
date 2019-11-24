@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source /etc/init.d/functions.sh
+source /etc/conf.d/gb-chroot
+
+for i in $UPDATE_CHROOT
+do
+    gb-enter $i ${@:1}
+done
