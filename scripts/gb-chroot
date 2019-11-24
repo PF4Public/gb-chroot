@@ -12,6 +12,25 @@ start() {
 stop() {
         for i in $(cd  ${CHROOT_TOP}; ls -d */ | cut -f1 -d'/')
         do
+            if [ ! -e $RUN_DIR/$i ]
+            then
+                einfo "Skipping $i"
+                continue
+            fi
+
+            COUNT=$(<$RUN_DIR/$i)
+
+            if [ -z $COUNT ]
+            then
+                COUNT=0
+            fi
+
+            if [ $COUNT -eq 0 ]
+            then
+                einfo "Skipping $i"
+                continue
+            fi
+
             ebegin "Unmounting chroot $i"
             gb-mount u $i
             eend $?
