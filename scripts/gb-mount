@@ -35,6 +35,8 @@ unmount_it()
     eend $? "An error occured while attempting to unmount chroot directories"
 }
 
+mkdir -p $RUN_DIR
+
 (
     flock -x -w 60 200
 
