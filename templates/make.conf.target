@@ -1,0 +1,19 @@
+# Use this file as a template for
+# /etc/portage/make.conf.local in target
+
+# Fill in if needed
+#GENTOO_MIRRORS=""
+# Your binhost goes here
+PORTAGE_BINHOST=""
+
+FEATURES="getbinpkg"
+EMERGE_DEFAULT_OPTS="--jobs 2 --quiet-build=y --usepkg-exclude \
+'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"
+
+# Adapt to your target host in case you'll
+# need to actually build something
+MAKEOPTS="-j4"
+
+# Nice to have it on target in case you'll
+# need to actually build something
+PORTAGE_NICENESS="15"
