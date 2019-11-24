@@ -1,0 +1,11 @@
+# Use this template to upgrade via cron
+# this file could be placed for example into /etc/cron.d/99-gb-update
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+
+# Updating the host
+#00 22 * * 5 root gb-update-host 2>&1 | /usr/bin/logger -t gb-update
+
+# Updating the target
+#00 22 * * 5 root gb-update-target 2>&1 | /usr/bin/logger -t gb-update
