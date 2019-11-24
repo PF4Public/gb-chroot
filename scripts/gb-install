@@ -76,7 +76,7 @@ eend $?
 
 einfo "Copying misc /etc files"
 (
-    cp -pf /etc/passwd /etc/shadow /etc/group /etc/gshadow /etc/hosts /
+    cp -pf /etc/passwd /etc/shadow /etc/group /etc/gshadow /etc/hosts \
         $CHROOT_TOP/$1/etc/
 )
 
