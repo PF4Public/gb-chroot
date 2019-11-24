@@ -55,7 +55,7 @@ einfo "Creating layman directory"
 
 einfo "Updating /etc/profile"
 (
-    echo \"PS1="($1) \${PS1}"\" >> $CHROOT_TOP/$1/etc/profile
+    echo "PS1=\"($1) \${PS1}\"" >> $CHROOT_TOP/$1/etc/profile
 )
 
 einfo "Copying timezone information"
