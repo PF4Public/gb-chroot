@@ -46,7 +46,7 @@ mkdir -p $RUN_DIR
     fi
 
     COUNT=$(<$RUN_DIR/$2)
-    echo "count: $COUNT"
+
     if [ -z $COUNT ]
     then
         COUNT=0
