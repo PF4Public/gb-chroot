@@ -7,6 +7,11 @@ source /etc/conf.d/gb-chroot
 einfo "Creating $CHROOT_TOP/$1"
 mkdir $CHROOT_TOP/$1
 
+einfo "Creating /var/cache/binpkgs/$1"
+(
+    mkdir /var/cache/binpkgs/$1
+)
+
 #TODO implement downloading + gpg checking
 ebegin "Unpacking $(ls $CHROOT_TOP/*$2-[0-9]*)"
 (
@@ -36,6 +41,11 @@ einfo "Creating repos.conf"
 einfo "Copying resolv.conf"
 (
     cp -pf --dereference /etc/resolv.conf $CHROOT_TOP/$1/etc/
+)
+
+einfo "Creating portage directory"
+(
+    mkdir $CHROOT_TOP/$1/var/db/repos/gentoo
 )
 
 einfo "Creating layman directory"
