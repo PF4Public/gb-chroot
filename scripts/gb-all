@@ -5,5 +5,6 @@ source /etc/conf.d/gb-chroot
 
 for i in $UPDATE_CHROOT
 do
+    einfo "gb-all: $i"
     gb-enter $i ${@:1}
 done
