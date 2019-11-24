@@ -24,8 +24,8 @@ eend $?
 
 einfo "Copying template make.conf"
 (
-    cp -pf ../templates/make.conf $CHROOT_TOP/$1/etc/portage
-    cp -pf ../templates/make.conf.chroot $CHROOT_TOP/$1/etc/portage/make.conf.local
+    cp -pf /usr/share/gb-chroot/make.conf $CHROOT_TOP/$1/etc/portage
+    cp -pf /usr/share/gb-chroot/make.conf.chroot $CHROOT_TOP/$1/etc/portage/make.conf.local
 )
 
 einfo "Creating repos.conf"
