@@ -1,0 +1,75 @@
+# Use this template to automatically create github releases
+# and upload binaries for further usage in *-bin ebuilds
+# Not to be confused with binpkgs
+
+pre_pkg_preinst () {
+
+# A path to ok.sh script
+OK_SH="/opt/common-scripts/ok.sh"
+# A path to jq binary, needed by ok.sh
+# Should be executable in chroot, so 
+# 32-bit binary is more universal
+export OK_SH_JQ_BIN='/opt/common-scripts/jq-linux32'
+
+# Your github token
+export GITHUB_TOKEN=''
+USER="username"
+REPO="github-project-bin"
+FILE_NAME="haswell.tar.bz2"
+UP_FILE="/var/cache/binpkgs/PACKAGE/${PF}.tbz2"
+
+# Adapt to your tagging scheme
+# All ebuild variables are available
+TAG="${PV/_p/-}"
+
+# Normally you don't have to edit anything below
+# If you do, however, consider making a PR ;)
+# **********************************************
+
+${OK_SH} list_releases "$USER" "$REPO" | grep "${TAG}" >/dev/null
+
+RETVAL=$?
+if [ $RETVAL -ne 0 ]
+then
+    # No such release
+    WORK_DIR=$(mktemp -d)
+    cp ${UP_FILE} ${WORK_DIR}
+    (cd ${WORK_DIR}; qtbz2 -t ${PF}.tbz2)
+
+    FILE_PATH="${WORK_DIR}/${PF}.tar.bz2"
+
+    ${OK_SH} create_release "$USER" "$REPO" "$TAG" _filter='.upload_url' \
+    | sed 's/{.*$/?name='"$FILE_NAME"'/' \
+    | xargs -I@ ${OK_SH} -q upload_asset @ "$FILE_PATH"
+
+    elog "Created release ${TAG} and uploaded ${FILE_NAME}"
+
+    rm -rf ${WORK_DIR}
+else
+    # There is such a release
+    ${OK_SH} list_releases "$USER" "$REPO" \
+    | awk -v "tag=$TAG" -F'\t' '$2 == tag { print $3 }' \
+    | xargs -I@ ${OK_SH} release_assets "$USER" "$REPO" @ | grep "${FILE_NAME}" >/dev/null
+
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]
+    then
+        WORK_DIR=$(mktemp -d)
+        cp ${UP_FILE} ${WORK_DIR}
+        (cd ${WORK_DIR}; qtbz2 -t ${PF}.tbz2)
+
+        FILE_PATH="${WORK_DIR}/${PF}.tar.bz2"
+
+        ${OK_SH} list_releases "$USER" "$REPO" \
+        | awk -v "tag=$TAG" -F'\t' '$2 == tag { print $3 }' \
+        | xargs -I@ ${OK_SH} release "$USER" "$REPO" @ _filter='.upload_url' \
+        | sed 's/{.*$/?name='"$FILE_NAME"'/' \
+        | xargs -I@ ${OK_SH} -q upload_asset @ "$FILE_PATH"
+
+        elog "Uploaded ${FILE_NAME} into existing release ${TAG}"
+
+        rm -rf ${WORK_DIR}
+    fi
+fi
+
+}
