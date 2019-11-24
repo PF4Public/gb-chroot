@@ -1,3 +1,4 @@
+# This file needs to be copied into /etc/portage/env/category/package
 # Use this template to automatically create github releases
 # and upload binaries for further usage in *-bin ebuilds
 # Not to be confused with binpkgs
