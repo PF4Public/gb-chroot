@@ -80,6 +80,12 @@ einfo "Copying misc /etc files"
         $CHROOT_TOP/$1/etc/
 )
 
+einfo "Dumping profile and locale"
+(
+    gb-enter $1 eselect profile list
+    gb-enter $1 eselect locale list
+)
+
 ewarn "Don't forget to:"
 ewarn "edit $CHROOT_TOP/$1/etc/portage/make.conf.local"
 ewarn "select target's profile with: 'gb-enter $1 eselect profile'"
