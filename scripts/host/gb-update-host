@@ -13,7 +13,7 @@ emerge --keep-going=y --update --deep --changed-use --with-bdeps=y @world
 eend $? "Host update failed"
 
 ebegin "emerge depclean"
-emerge --depclean
+emerge --depclean --exclude="sys-kernel/linux-image"
 eend $? "Host depclean failed"
 
 ebegin "gb-all"
