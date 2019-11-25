@@ -1,0 +1,13 @@
+# This file is sourced by gb-chroot host utilities
+
+# Which of them should be mounted since boot
+#BOOT_CHROOT="core2 haswell"
+
+# Which of them should be regularly updated
+#UPDATE_CHROOT="core2 haswell"
+
+# Where all chroots are to be kept
+CHROOT_TOP=/var/lib/gb-chroot
+
+# Where lockfiles are kept
+RUN_DIR=/run/gb-chroot
