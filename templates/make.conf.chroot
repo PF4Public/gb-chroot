@@ -1,6 +1,9 @@
 # Use this file as a template for
 # /etc/portage/make.conf.local in chroot
 
+# You might need to redefine CHOST in chroot
+#CHOST=""
+
 # Fill in if needed
 #GENTOO_MIRRORS=""
 
