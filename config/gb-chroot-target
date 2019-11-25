@@ -1,13 +1,7 @@
-# This file is sourced by gb-chroot host utilities
+# This file is sourced by gb-chroot target utilities
 
-# Which of them should be mounted since boot
-#BOOT_CHROOT="core2 haswell"
+# How could scp acces the binhost
+SCP_HOST="user@host.domain"
 
-# Which of them should be regularly updated
-#UPDATE_CHROOT="core2 haswell"
-
-# Where all chroots are to be kept
-CHROOT_TOP=/var/lib/gb-chroot
-
-# Where lockfiles are kept
-RUN_DIR=/run/gb-chroot
+# Which chroot corresponds to this target
+TARGET_CHROOT="core2"

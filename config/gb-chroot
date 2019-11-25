@@ -1,4 +1,4 @@
-# This file is sourced by gb-chroot utilities
+# This file is sourced by gb-chroot host utilities
 
 # Which of them should be mounted since boot
 #BOOT_CHROOT="core2 haswell"
