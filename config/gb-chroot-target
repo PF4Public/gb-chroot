@@ -3,5 +3,8 @@
 # How could scp acces the binhost
 SCP_HOST="user@host.domain"
 
+# Where all chroots are kept
+CHROOT_TOP=/var/lib/gb-chroot
+
 # Which chroot corresponds to this target
 TARGET_CHROOT="core2"

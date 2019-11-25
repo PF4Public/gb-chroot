@@ -1,0 +1,28 @@
+#!/bin/bash
+
+source /etc/init.d/functions.sh
+source /etc/gb-chroot.conf
+
+ebegin "Sending package.*"
+scp -r /etc/portage/package.* ${SCP_HOST}:${CHROOT_TOP}/${TARGET_CHROOT}/etc/portage
+eend $? "Failed"
+
+ebegin "Sending savedconfig"
+scp -r /etc/portage/savedconfig ${SCP_HOST}:${CHROOT_TOP}/${TARGET_CHROOT}/etc/portage
+eend $? "Failed"
+
+ebegin "Sending patches"
+scp -r /etc/portage/patches ${SCP_HOST}:${CHROOT_TOP}/${TARGET_CHROOT}/etc/portage
+eend $? "Failed"
+
+ebegin "Sending profile"
+scp -r /etc/portage/profile ${SCP_HOST}:${CHROOT_TOP}/${TARGET_CHROOT}/etc/portage
+eend $? "Failed"
+
+ebegin "Sending make.conf"
+scp -r /etc/portage/make.conf ${SCP_HOST}:${CHROOT_TOP}/${TARGET_CHROOT}/etc/portage
+eend $? "Failed"
+
+ebegin "Sending world"
+scp /var/lib/portage/world ${SCP_HOST}:${CHROOT_TOP}/${TARGET_CHROOT}/etc/portage/sets/${TARGET_CHROOT}
+eend $? "Failed"
