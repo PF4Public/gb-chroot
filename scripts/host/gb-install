@@ -38,6 +38,11 @@ einfo "Creating repos.conf"
     mkdir $CHROOT_TOP/$1/etc/portage/repos.conf
 )
 
+einfo "Creating portage sets"
+(
+    mkdir $CHROOT_TOP/$1/etc/portage/sets
+)
+
 einfo "Copying resolv.conf"
 (
     cp -pf --dereference /etc/resolv.conf $CHROOT_TOP/$1/etc/
