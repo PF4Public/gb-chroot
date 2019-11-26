@@ -5,7 +5,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=root
 
 # Updating the host
-#00 22 * * 5 root gb-update-host 2>&1 | /usr/bin/logger -t gb-update
+#00 00 * * 1 root gb-update-host 2>&1 | /usr/bin/logger -t gb-update
 
 # Updating the target
 #00 22 * * 5 root gb-update-target 2>&1 | /usr/bin/logger -t gb-update
