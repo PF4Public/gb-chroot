@@ -16,9 +16,7 @@ ebegin "emerge depclean"
 emerge --depclean --exclude="sys-kernel/linux-image"
 eend $? "Host depclean failed"
 
-ebegin "gb-all"
 gb-all gb-update-chroot
-eend $? "gb-all failed"
 
 ebegin "eclean distfiles"
 eclean distfiles
