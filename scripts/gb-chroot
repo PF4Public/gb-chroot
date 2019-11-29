@@ -4,7 +4,7 @@ start() {
         for i in $BOOT_CHROOT
         do
             ebegin "Mounting chroot $i"
-            gb-mount m $i
+            gb-mount m "$i"
             eend $?
         done
 }
@@ -32,7 +32,7 @@ stop() {
             fi
 
             ebegin "Unmounting chroot $i"
-            gb-mount u $i
+            gb-mount u "$i"
             eend $?
         done
 }
