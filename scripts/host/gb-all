@@ -1,6 +1,13 @@
 #!/bin/bash
 
-source /etc/init.d/functions.sh
+if [ -e /lib/gentoo/functions.sh ]
+then
+    source /lib/gentoo/functions.sh
+elif [ -e /etc/init.d/functions.sh ]
+then
+ 	source /etc/init.d/functions.sh
+fi
+
 source /etc/conf.d/gb-chroot
 
 for i in $UPDATE_CHROOT
