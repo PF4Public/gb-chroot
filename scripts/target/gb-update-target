@@ -21,9 +21,9 @@ emerge --depclean --with-bdeps=n --exclude="sys-kernel/linux-image"
 eend $? "Depclean failed"
 
 ebegin "eclean packages"
-eclean packages
+eclean --deep packages
 eend $? "Clean packages failed"
 
 ebegin "eclean distfiles"
-eclean distfiles
+eclean --deep distfiles
 eend $? "Clean distfiles failed"
