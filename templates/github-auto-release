@@ -2,6 +2,9 @@
 # Use this template to automatically create github releases
 # and upload binaries for further usage in *-bin ebuilds
 # Not to be confused with binpkgs
+# For usage example look here:
+# https://github.com/PF4Public/gentoo-overlay/tree/master/www-client/ungoogled-chromium-bin
+# and here: https://github.com/PF4Public/ungoogled-chromium-bin/releases
 
 pre_pkg_preinst () {
 
