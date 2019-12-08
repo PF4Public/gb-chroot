@@ -10,7 +10,7 @@ start() {
 }
 
 stop() {
-        for i in $(find "$CHROOT_TOP" -mindepth 1 -maxdepth 1 -type d -printf %P'\0')
+        for i in $(find "$CHROOT_TOP" -mindepth 1 -maxdepth 1 -type d -printf %P'\n')
         do
             if [ ! -e $RUN_DIR/$i ]
             then
