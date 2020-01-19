@@ -17,3 +17,10 @@ MAKEOPTS="-j4"
 # Nice to have it on target in case you'll
 # need to actually build something
 PORTAGE_NICENESS="15"
+
+# Define ccache directory if used
+#CCACHE_DIR="/var/cache/ccache"
+# It is possible to permanently enable ccache with
+#FEATURES="ccache"
+# Alternatively it is possible to source the supplied gb-ccache
+# which will enable ccache for the current session

@@ -13,3 +13,10 @@ EMERGE_DEFAULT_OPTS="--jobs 1 --quiet-build=y --buildpkg-exclude \
 
 # Adapt to your build host
 MAKEOPTS="-j8"
+
+# Define ccache directory if used
+#CCACHE_DIR="/var/cache/ccache"
+# It is possible to permanently enable ccache with
+#FEATURES="ccache"
+# Alternatively it is possible to source the supplied gb-ccache
+# which will enable ccache for the current session
