@@ -8,7 +8,7 @@
 #GENTOO_MIRRORS=""
 
 FEATURES="buildpkg"
-EMERGE_DEFAULT_OPTS="--jobs 2 --quiet-build=y --buildpkg-exclude \
+EMERGE_DEFAULT_OPTS="--jobs 1 --quiet-build=y --buildpkg-exclude \
 'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"
 
 # Adapt to your build host
