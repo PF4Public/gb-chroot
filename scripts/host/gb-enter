@@ -8,15 +8,20 @@ then
     source /etc/init.d/functions.sh
 fi
 
+check_exit()
+{
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]
+    then
+        eerror "$1 failed"
+        exit $RETVAL
+    fi
+}
+
 source /etc/conf.d/gb-chroot
 
 gb-mount m $1
-RETVAL=$?
-if [ $RETVAL -ne 0 ]
-then
-    eerror "Mounting chroot \"$1\" failed"
-    exit $RETVAL
-fi
+check_exit "Mounting chroot \"$1\""
 
 if [ -z $2 ]
 then
@@ -29,9 +34,4 @@ else
 fi
 
 gb-mount u $1
-RETVAL=$?
-if [ $RETVAL -ne 0 ]
-then
-    eerror "Unmounting chroot \"$1\" failed"
-    exit $RETVAL
-fi
+check_exit "Unmounting chroot \"$1\""
