@@ -17,7 +17,6 @@ fi
 
 mount_it()
 {
-    #ebegin "Mounting chroot directories in $1"
     mount --types proc /proc $CHROOT_TOP/$1/proc
     mount --rbind /sys $CHROOT_TOP/$1/sys
     mount --rbind /dev $CHROOT_TOP/$1/dev
@@ -28,12 +27,10 @@ mount_it()
     mount -o bind /etc/portage/repos.conf $CHROOT_TOP/$1/etc/portage/repos.conf
     mount -o bind /var/lib/layman $CHROOT_TOP/$1/var/lib/layman
     mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none $CHROOT_TOP/$1/run
-    #eend $? "An error occured while attempting to mount chroot directories"
 }
 
 unmount_it()
 {
-    #ebegin "Unmounting chroot directories in $1"
     umount -fR $CHROOT_TOP/$1/dev
     umount -fR $CHROOT_TOP/$1/sys
     umount -f $CHROOT_TOP/$1/proc
@@ -44,7 +41,6 @@ unmount_it()
     umount -f $CHROOT_TOP/$1/etc/portage/repos.conf
     umount -f $CHROOT_TOP/$1/var/lib/layman
     umount -f $CHROOT_TOP/$1/run
-    #eend $? "An error occured while attempting to unmount chroot directories"
 }
 
 mkdir -p $RUN_DIR
