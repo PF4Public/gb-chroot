@@ -11,7 +11,7 @@ fi
 source /etc/conf.d/gb-chroot
 
 if [ ! -d "$CHROOT_TOP/$1" ]; then
-    echo "Chroot \"$1\" does not exist."
+    eerror "Chroot \"$1\" does not exist."
     exit 1
 fi
 

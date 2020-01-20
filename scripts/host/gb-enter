@@ -14,7 +14,7 @@ gb-mount m $1
 RETVAL=$?
 if [ $RETVAL -ne 0 ]
 then
-    echo "gb-mount m failed"
+    eerror "Mounting chroot \"$1\" failed"
     exit $RETVAL
 fi
 
@@ -32,6 +32,6 @@ gb-mount u $1
 RETVAL=$?
 if [ $RETVAL -ne 0 ]
 then
-    echo "gb-mount u failed"
+    eerror "Unmounting chroot \"$1\" failed"
     exit $RETVAL
 fi
