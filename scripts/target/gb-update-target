@@ -8,22 +8,32 @@ then
     source /etc/init.d/functions.sh
 fi
 
-ebegin "emerge --sync"
-emerge --sync > /dev/null
-eend $? "Sync failed"
+check_exit()
+{
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]
+    then
+        if [ $1 -ne 0 ]
+        then
+            eerror "$2 failed"
+            exit $RETVAL
+        else
+            ewarn "$2 failed"
+        fi
+    fi
+}
 
-ebegin "emerge update"
-emerge --keep-going=y --update --deep --changed-use --binpkg-changed-deps=y @world
-eend $? "Update failed"
+emerge --sync
+check_exit 1 "Sync"
 
-ebegin "emerge depclean"
+emerge --verbose --keep-going=y --update --deep --changed-use @world
+check_exit 1 "Update"
+
 emerge --depclean --with-bdeps=n --exclude="sys-kernel/linux-image"
-eend $? "Depclean failed"
+check_exit 0 "Depclean"
 
-ebegin "eclean packages"
 eclean --deep packages
-eend $? "Clean packages failed"
+check_exit 0 "Clean packages"
 
-ebegin "eclean distfiles"
 eclean --deep distfiles
-eend $? "Clean distfiles failed"
+check_exit 0 "Clean distfiles"

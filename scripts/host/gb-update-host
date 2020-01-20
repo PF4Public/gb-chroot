@@ -8,24 +8,35 @@ then
     source /etc/init.d/functions.sh
 fi
 
+check_exit()
+{
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]
+    then
+        if [ $1 -ne 0 ]
+        then
+            eerror "$2 failed"
+            exit $RETVAL
+        else
+            ewarn "$2 failed"
+        fi
+    fi
+}
+
 rc-service rsyncd stop
 
-ebegin "emerge --sync"
-emerge --sync > /dev/null
-eend $? "Sync failed"
+emerge --sync
+check_exit 1 "Sync"
 
-ebegin "emerge update"
-emerge --keep-going=y --update --deep --changed-use --with-bdeps=y @world
-eend $? "Host update failed"
+emerge --verbose --keep-going=y --update --deep --changed-use --with-bdeps=y @world
+check_exit 1 "Host update"
 
-ebegin "emerge depclean"
 emerge --depclean --exclude="sys-kernel/linux-image"
-eend $? "Host depclean failed"
+check_exit 0 "Host depclean"
 
 gb-all gb-update-chroot
 
-ebegin "eclean distfiles"
 eclean distfiles
-eend $? "Host distfiles failed"
+check_exit 0 "Host distfiles"
 
 rc-service rsyncd start

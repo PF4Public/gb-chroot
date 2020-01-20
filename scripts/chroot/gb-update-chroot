@@ -8,14 +8,26 @@ then
     source /etc/init.d/functions.sh
 fi
 
-ebegin "emerge update"
-emerge --keep-going=y --update --deep --changed-use --with-bdeps=y @world
-eend $? "Update failed"
+check_exit()
+{
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]
+    then
+        if [ $1 -ne 0 ]
+        then
+            eerror "$2 failed"
+            exit $RETVAL
+        else
+            ewarn "$2 failed"
+        fi
+    fi
+}
 
-ebegin "emerge depclean"
+emerge --verbose --keep-going=y --update --deep --changed-use --with-bdeps=y @world
+check_exit 1 "Update"
+
 emerge --depclean
-eend $? "Depclean failed"
+check_exit 0 "Depclean"
 
-ebegin "eclean packages"
 eclean packages
-eend $? "Clean packages failed"
+check_exit 0 "Clean packages"
