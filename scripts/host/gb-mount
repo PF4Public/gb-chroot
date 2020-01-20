@@ -5,10 +5,15 @@ then
     source /lib/gentoo/functions.sh
 elif [ -e /etc/init.d/functions.sh ]
 then
- 	source /etc/init.d/functions.sh
+    source /etc/init.d/functions.sh
 fi
 
 source /etc/conf.d/gb-chroot
+
+if [ ! -d "$CHROOT_TOP/$1" ]; then
+    echo "Chroot \"$1\" does not exist."
+    exit 1
+fi
 
 mount_it()
 {
