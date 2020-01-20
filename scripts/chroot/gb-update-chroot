@@ -5,11 +5,11 @@ then
     source /lib/gentoo/functions.sh
 elif [ -e /etc/init.d/functions.sh ]
 then
- 	source /etc/init.d/functions.sh
+    source /etc/init.d/functions.sh
 fi
 
 ebegin "emerge update"
-emerge --keep-going=y --update --deep --changed-use --with-bdeps=y @world 
+emerge --keep-going=y --update --deep --changed-use --with-bdeps=y @world
 eend $? "Update failed"
 
 ebegin "emerge depclean"

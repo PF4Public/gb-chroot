@@ -5,7 +5,7 @@ then
     source /lib/gentoo/functions.sh
 elif [ -e /etc/init.d/functions.sh ]
 then
- 	source /etc/init.d/functions.sh
+    source /etc/init.d/functions.sh
 fi
 
 source /etc/conf.d/gb-chroot
@@ -89,7 +89,7 @@ eend $?
 einfo "Copying misc /etc files"
 (
     cp -pf /etc/passwd /etc/shadow /etc/group /etc/gshadow /etc/hosts \
-        $CHROOT_TOP/$1/etc/
+    $CHROOT_TOP/$1/etc/
 )
 
 einfo "Dumping profile and locale"

@@ -5,7 +5,7 @@ then
     source /lib/gentoo/functions.sh
 elif [ -e /etc/init.d/functions.sh ]
 then
- 	source /etc/init.d/functions.sh
+    source /etc/init.d/functions.sh
 fi
 
 source /etc/gb-chroot.conf

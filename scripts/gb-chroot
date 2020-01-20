@@ -1,38 +1,38 @@
 #!/sbin/openrc-run
 
 start() {
-        for i in $BOOT_CHROOT
-        do
-            ebegin "Mounting chroot $i"
-            gb-mount m "$i"
-            eend $?
-        done
+    for i in $BOOT_CHROOT
+    do
+        ebegin "Mounting chroot $i"
+        gb-mount m "$i"
+        eend $?
+    done
 }
 
 stop() {
-        for i in $(find "$CHROOT_TOP" -mindepth 1 -maxdepth 1 -type d -printf %P'\n')
-        do
-            if [ ! -e $RUN_DIR/$i ]
-            then
-                einfo "Skipping $i"
-                continue
-            fi
-
-            COUNT=$(<$RUN_DIR/$i)
-
-            if [ -z $COUNT ]
-            then
-                COUNT=0
-            fi
-
-            if [ $COUNT -eq 0 ]
-            then
-                einfo "Skipping $i"
-                continue
-            fi
-
-            ebegin "Unmounting chroot $i"
-            gb-mount u "$i"
-            eend $?
-        done
+    for i in $(find "$CHROOT_TOP" -mindepth 1 -maxdepth 1 -type d -printf %P'\n')
+    do
+        if [ ! -e $RUN_DIR/$i ]
+        then
+            einfo "Skipping $i"
+            continue
+        fi
+        
+        COUNT=$(<$RUN_DIR/$i)
+        
+        if [ -z $COUNT ]
+        then
+            COUNT=0
+        fi
+        
+        if [ $COUNT -eq 0 ]
+        then
+            einfo "Skipping $i"
+            continue
+        fi
+        
+        ebegin "Unmounting chroot $i"
+        gb-mount u "$i"
+        eend $?
+    done
 }

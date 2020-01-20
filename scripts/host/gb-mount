@@ -51,19 +51,19 @@ mkdir -p $RUN_DIR
 
 (
     flock -x -w 60 200
-
+    
     if [ ! -e $RUN_DIR/$2 ]
     then
         touch $RUN_DIR/$2
     fi
-
+    
     COUNT=$(<$RUN_DIR/$2)
-
+    
     if [ -z $COUNT ]
     then
         COUNT=0
     fi
-
+    
     if [ $1 = "m" ]
     then
         if [ $COUNT -lt 1 ]
@@ -84,5 +84,5 @@ mkdir -p $RUN_DIR
         fi
         echo "$COUNT" > $RUN_DIR/$2
     fi
-
+    
 ) 200>$RUN_DIR/$2.lock
