@@ -29,12 +29,12 @@ if [ -z $2 ]
 then
     einfo "Entering chroot $1"
     chroot $CHROOT_TOP/$1 /bin/bash --login
-    $EXIT_VALUE=$?
+    EXIT_VALUE=$?
 else
     einfo "Running in chroot $1:"
     einfo "'${@:2}'"
     chroot $CHROOT_TOP/$1 ${@:2}
-    $EXIT_VALUE=$?
+    EXIT_VALUE=$?
 fi
 
 gb-mount u $1
