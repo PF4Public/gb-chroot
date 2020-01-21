@@ -1,6 +1,6 @@
 # This file is sourced by gb-chroot target utilities
 
-# How could scp acces the binhost
+# How could scp or ssh acces the binhost
 SCP_HOST="user@host.domain"
 
 # Where all chroots are kept
