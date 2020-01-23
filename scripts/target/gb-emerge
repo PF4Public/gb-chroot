@@ -20,8 +20,8 @@ check_exit()
 
 source /etc/gb-chroot.conf
 
-ssh -t ${SCP_HOST} gb-enter ${TARGET_CHROOT} emerge -av1 ${@:1}
+ssh -t ${SCP_HOST} gb-enter ${TARGET_CHROOT} emerge -av1 --autounmask ${@:1}
 check_exit "emerge in chroot"
 
-emerge -av ${@:1}
+emerge -av --autounmask ${@:1}
 check_exit "emerge locally"
