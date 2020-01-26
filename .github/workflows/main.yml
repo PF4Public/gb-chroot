@@ -1,6 +1,6 @@
 name: CI
 
-on: [push,pull_request]
+on: [push, pull_request]
 
 jobs:
   check:
@@ -10,4 +10,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: shellcheck
-      run: shellcheck scripts/gb-chroot scripts/host/* scripts/target/* scripts/chroot/*
+      run: shellcheck --exclude SC1008,SC1091 scripts/gb-chroot scripts/host/* scripts/target/* scripts/chroot/*
