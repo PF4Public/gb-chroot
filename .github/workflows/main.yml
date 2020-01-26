@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  check:
+  shellcheck:
 
     runs-on: ubuntu-latest
 
