@@ -23,7 +23,7 @@ check_exit()
     fi
 }
 
-emerge --verbose --keep-going=y --update --deep --changed-use --with-bdeps=y @world
+emerge --verbose --keep-going=y --usepkg=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Update"
 
 emerge --depclean
