@@ -23,6 +23,8 @@ check_exit()
     fi
 }
 
+eselect news read
+
 emerge --verbose --keep-going=y --usepkg=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Update"
 

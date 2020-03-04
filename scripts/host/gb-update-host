@@ -23,6 +23,8 @@ check_exit()
     fi
 }
 
+eselect news read
+
 rc-service rsyncd stop
 
 emerge --sync
