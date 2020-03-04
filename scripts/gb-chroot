@@ -12,15 +12,15 @@ start() {
 stop() {
     for i in $(find "$CHROOT_TOP" -mindepth 1 -maxdepth 1 -type d -printf %P'\n')
     do
-        if [ ! -e $RUN_DIR/$i ]
+        if [ ! -e "$RUN_DIR"/"$i" ]
         then
             einfo "Skipping $i"
             continue
         fi
         
-        COUNT=$(<$RUN_DIR/$i)
+        COUNT=$(<"$RUN_DIR"/"$i")
         
-        if [ -z $COUNT ]
+        if [ -z "$COUNT" ]
         then
             COUNT=0
         fi

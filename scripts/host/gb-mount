@@ -17,68 +17,68 @@ fi
 
 mount_it()
 {
-    mount --types proc /proc $CHROOT_TOP/$1/proc
-    mount --rbind /sys $CHROOT_TOP/$1/sys
-    mount --rbind /dev $CHROOT_TOP/$1/dev
-    mount -o bind /tmp $CHROOT_TOP/$1/tmp
-    mount -o bind /var/cache/binpkgs/$1 $CHROOT_TOP/$1/var/cache/binpkgs
-    mount -o bind /var/cache/distfiles $CHROOT_TOP/$1/var/cache/distfiles
-    mount -o bind /var/db/repos/gentoo $CHROOT_TOP/$1/var/db/repos/gentoo
-    mount -o bind /etc/portage/repos.conf $CHROOT_TOP/$1/etc/portage/repos.conf
-    mount -o bind /var/lib/layman $CHROOT_TOP/$1/var/lib/layman
-    mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none $CHROOT_TOP/$1/run
+    mount --types proc /proc "$CHROOT_TOP"/"$1"/proc
+    mount --rbind /sys "$CHROOT_TOP"/"$1"/sys
+    mount --rbind /dev "$CHROOT_TOP"/"$1"/dev
+    mount -o bind /tmp "$CHROOT_TOP"/"$1"/tmp
+    mount -o bind /var/cache/binpkgs/"$1" "$CHROOT_TOP"/"$1"/var/cache/binpkgs
+    mount -o bind /var/cache/distfiles "$CHROOT_TOP"/"$1"/var/cache/distfiles
+    mount -o bind /var/db/repos/gentoo "$CHROOT_TOP"/"$1"/var/db/repos/gentoo
+    mount -o bind /etc/portage/repos.conf "$CHROOT_TOP"/"$1"/etc/portage/repos.conf
+    mount -o bind /var/lib/layman "$CHROOT_TOP"/"$1"/var/lib/layman
+    mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none "$CHROOT_TOP"/"$1"/run
 }
 
 unmount_it()
 {
-    umount -fR $CHROOT_TOP/$1/dev
-    umount -fR $CHROOT_TOP/$1/sys
-    umount -f $CHROOT_TOP/$1/proc
-    umount -f $CHROOT_TOP/$1/tmp
-    umount -f $CHROOT_TOP/$1/var/cache/binpkgs
-    umount -f $CHROOT_TOP/$1/var/cache/distfiles
-    umount -f $CHROOT_TOP/$1/var/db/repos/gentoo
-    umount -f $CHROOT_TOP/$1/etc/portage/repos.conf
-    umount -f $CHROOT_TOP/$1/var/lib/layman
-    umount -f $CHROOT_TOP/$1/run
+    umount -fR "$CHROOT_TOP"/"$1"/dev
+    umount -fR "$CHROOT_TOP"/"$1"/sys
+    umount -f "$CHROOT_TOP"/"$1"/proc
+    umount -f "$CHROOT_TOP"/"$1"/tmp
+    umount -f "$CHROOT_TOP"/"$1"/var/cache/binpkgs
+    umount -f "$CHROOT_TOP"/"$1"/var/cache/distfiles
+    umount -f "$CHROOT_TOP"/"$1"/var/db/repos/gentoo
+    umount -f "$CHROOT_TOP"/"$1"/etc/portage/repos.conf
+    umount -f "$CHROOT_TOP"/"$1"/var/lib/layman
+    umount -f "$CHROOT_TOP"/"$1"/run
 }
 
-mkdir -p $RUN_DIR
+mkdir -p "$RUN_DIR"
 
 (
     flock -x -w 60 200
     
-    if [ ! -e $RUN_DIR/$2 ]
+    if [ ! -e "$RUN_DIR"/"$2" ]
     then
-        touch $RUN_DIR/$2
+        touch "$RUN_DIR"/"$2"
     fi
     
-    COUNT=$(<$RUN_DIR/$2)
+    COUNT=$(<"$RUN_DIR"/"$2")
     
-    if [ -z $COUNT ]
+    if [ -z "$COUNT" ]
     then
         COUNT=0
     fi
     
-    if [ $1 = "m" ]
+    if [ "$1" = "m" ]
     then
         if [ $COUNT -lt 1 ]
         then
-            mount_it $2
+            mount_it "$2"
         fi
         ((COUNT=COUNT+1))
-        echo "$COUNT" > $RUN_DIR/$2
+        echo "$COUNT" > "$RUN_DIR"/"$2"
     else
         if [ $COUNT -le 1 ]
         then
-            unmount_it $2
+            unmount_it "$2"
         fi
         ((COUNT=COUNT-1))
         if [ $COUNT -lt 1 ]
         then
             COUNT=0
         fi
-        echo "$COUNT" > $RUN_DIR/$2
+        echo "$COUNT" > "$RUN_DIR"/"$2"
     fi
     
-) 200>$RUN_DIR/$2.lock
+) 200>"$RUN_DIR"/"$2".lock

@@ -12,5 +12,5 @@ source /etc/conf.d/gb-chroot
 
 for i in $UPDATE_CHROOT
 do
-    gb-enter $i ${@:1}
+    gb-enter "$i" "${@:1}"
 done

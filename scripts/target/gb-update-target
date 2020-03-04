@@ -13,7 +13,7 @@ check_exit()
     RETVAL=$?
     if [ $RETVAL -ne 0 ]
     then
-        if [ $1 -ne 0 ]
+        if [ "$1" -ne 0 ]
         then
             eerror "$2 failed"
             exit $RETVAL

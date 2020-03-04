@@ -12,90 +12,90 @@ source /etc/conf.d/gb-chroot
 
 #TODO check if exists
 einfo "Creating $CHROOT_TOP/$1"
-mkdir $CHROOT_TOP/$1
+mkdir "$CHROOT_TOP"/"$1"
 
 einfo "Creating /var/cache/binpkgs/$1"
 (
-    mkdir /var/cache/binpkgs/$1
+    mkdir /var/cache/binpkgs/"$1"
 )
 
 #TODO implement downloading + gpg checking
-ebegin "Unpacking $(ls $CHROOT_TOP/*$2-[0-9]*)"
+ebegin "Unpacking $(ls "$CHROOT_TOP"/*"$2"-[0-9]*)"
 (
-    cd $CHROOT_TOP/$1
-    tar xpf $CHROOT_TOP/*$2-[0-9]* --xattrs-include='*.*' --numeric-owner
+    cd "$CHROOT_TOP"/"$1" || exit
+    tar xpf "$CHROOT_TOP"/*"$2"-[0-9]* --xattrs-include='*.*' --numeric-owner
 )
 eend $?
 
 ebegin "Cleaning /dev"
 (
-    cd $CHROOT_TOP/$1/dev
-    rm -rf * .keep*
+    cd "$CHROOT_TOP"/"$1"/dev || exit
+    rm -rf ./* .keep*
 )
 eend $?
 
 einfo "Copying template make.conf"
 (
-    cp -pf /usr/share/gb-chroot/make.conf $CHROOT_TOP/$1/etc/portage
-    cp -pf /usr/share/gb-chroot/make.conf.chroot $CHROOT_TOP/$1/etc/portage/make.conf.local
+    cp -pf /usr/share/gb-chroot/make.conf "$CHROOT_TOP"/"$1"/etc/portage
+    cp -pf /usr/share/gb-chroot/make.conf.chroot "$CHROOT_TOP"/"$1"/etc/portage/make.conf.local
 )
 
 einfo "Creating repos.conf"
 (
-    mkdir $CHROOT_TOP/$1/etc/portage/repos.conf
+    mkdir "$CHROOT_TOP"/"$1"/etc/portage/repos.conf
 )
 
 einfo "Creating portage sets"
 (
-    mkdir $CHROOT_TOP/$1/etc/portage/sets
+    mkdir "$CHROOT_TOP"/"$1"/etc/portage/sets
 )
 
 einfo "Copying resolv.conf"
 (
-    cp -pf --dereference /etc/resolv.conf $CHROOT_TOP/$1/etc/
+    cp -pf --dereference /etc/resolv.conf "$CHROOT_TOP"/"$1"/etc/
 )
 
 einfo "Creating portage directory"
 (
-    mkdir $CHROOT_TOP/$1/var/db/repos/gentoo
+    mkdir "$CHROOT_TOP"/"$1"/var/db/repos/gentoo
 )
 
 einfo "Creating layman directory"
 (
-    mkdir $CHROOT_TOP/$1/var/lib/layman
+    mkdir "$CHROOT_TOP"/"$1"/var/lib/layman
 )
 
 einfo "Updating /etc/profile"
 (
-    echo "PS1=\"($1) \${PS1}\"" >> $CHROOT_TOP/$1/etc/profile
+    echo "PS1=\"($1) \${PS1}\"" >> "$CHROOT_TOP"/"$1"/etc/profile
 )
 
 einfo "Copying timezone information"
 (
-    cp -pf /etc/timezone /etc/localtime $CHROOT_TOP/$1/etc/
+    cp -pf /etc/timezone /etc/localtime "$CHROOT_TOP"/"$1"/etc/
 )
 
 einfo "Copying /etc/locale.gen"
 (
-    cp -pf /etc/locale.gen $CHROOT_TOP/$1/etc/
+    cp -pf /etc/locale.gen "$CHROOT_TOP"/"$1"/etc/
 )
 
 ebegin "Generating locales"
 (
-    gb-enter $1 locale-gen
+    gb-enter "$1" locale-gen
 )
 eend $?
 
 einfo "Copying misc /etc files"
 (
     cp -pf /etc/passwd /etc/shadow /etc/group /etc/gshadow /etc/hosts \
-    $CHROOT_TOP/$1/etc/
+    "$CHROOT_TOP"/"$1"/etc/
 )
 
 einfo "Dumping profile and locale"
 (
-    gb-enter $1 eselect profile list
-    gb-enter $1 eselect locale list
+    gb-enter "$1" eselect profile list
+    gb-enter "$1" eselect locale list
 )
 
 ewarn "Don't forget to:"

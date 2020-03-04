@@ -22,22 +22,22 @@ EXIT_VALUE=0
 
 source /etc/conf.d/gb-chroot
 
-gb-mount m $1
+gb-mount m "$1"
 check_exit "Mounting chroot \"$1\""
 
-if [ -z $2 ]
+if [ -z "$2" ]
 then
     einfo "Entering chroot $1"
-    chroot $CHROOT_TOP/$1 /bin/bash --login
+    chroot "$CHROOT_TOP"/"$1" /bin/bash --login
     EXIT_VALUE=$?
 else
     einfo "Running in chroot $1:"
     einfo "'${@:2}'"
-    chroot $CHROOT_TOP/$1 ${@:2}
+    chroot "$CHROOT_TOP"/"$1" "${@:2}"
     EXIT_VALUE=$?
 fi
 
-gb-mount u $1
+gb-mount u "$1"
 check_exit "Unmounting chroot \"$1\""
 
 exit $EXIT_VALUE
