@@ -3,28 +3,33 @@ A more detailed documentation follows, starting from [Contents](#Contents) secti
 
 To get things moving follow these steps:
 * Install **gb-chroot** with `host` USE flag on _host_ and without it into _target_ system 
-* With `gb-install core2 amd64` you can create new chroot, named _core2_ and using amd64 stage3 (should be already downloaded) as a source
-* Configure the just-created chroot as required
-* Use `gb-send-portage` on a _target_ to populate chroot potage directories
+* Configure `/etc/conf.d/gb-chroot` at the _host_ and `/etc/gb-chroot.conf` at the _target_
+* With `gb-install core2 amd64` you can create new chroot, named **core2** and using **amd64** stage3 (should be already downloaded) as a source
+* Configure the just-created _chroot_ as required
+* Use `gb-send-portage` on a _target_ to populate _chroot_ potage directories
 * Use `gb-upgrade-host` to upgrade everything
-* Use `gb-all emerge @installed` to install all the software in all chroots and build corresponding binpkgs
+* Use `gb-enter chroot_name emerge @host_name` to install all the required software in _chroot_ and build corresponding binpkgs
 * Install `rsyncd` into host and configure it to serve portage tree
 * Install your preferred web-server into host and configure it to serve binpkgs
 * Configure _target_ systems to sync and get binpkgs from _host_
-* Add `gb-update-host` in `cron` using one of supplied templates
+* Add `gb-update-host` into `cron` using one of the supplied templates
+* At a later time use `gb-emerge anything` on _target_ to start compiling a binpkg in _chroot_ and then immediately emerge it on _target_ if succeded
 
 # Contents
-- [Quickstart guide](#Quickstart-guide)
-- [Contents](#Contents)
-- [Terminology](#Terminology)
-- [Prerequisites](#Prerequisites)
-- [Installation](#Installation)
-- [Available scripts](#Available-scripts)
-- [Creating chroot](#Creating-chroot)
-- [Managing chroot](#Managing-chroot)
+- [Quickstart guide](#quickstart-guide)
+- [Contents](#contents)
+- [Terminology](#terminology)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Available scripts](#available-scripts)
+- [Creating chroot](#creating-chroot)
+- [Managing chroot](#managing-chroot)
 - [**gb-chroot** service](#gb-chroot-service)
-- [Managing target](#Managing-target)
-- [Managing host](#Managing-host)
+- [Managing target](#managing-target)
+- [Managing host](#managing-host)
+- [Emerging packages](#emerging-packages)
+- [Using ccache](#using-ccache)
+- [Building Linux kernel](#building-linux-kernel)
 
 # Terminology
 **Host** is a system, that hosts all chroots. It could be a bare system, a KVM-guest.
@@ -47,5 +52,8 @@ If your _host_ is a kvm-guest and you're plannig using qemu user-mode, you might
 # **gb-chroot** service
 # Managing target
 # Managing host
+# Emerging packages
+# Using ccache
+# Building Linux kernel
 
 
