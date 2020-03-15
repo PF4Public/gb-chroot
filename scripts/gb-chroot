@@ -10,7 +10,8 @@ start() {
 }
 
 stop() {
-    for i in $(find "$CHROOT_TOP" -mindepth 1 -maxdepth 1 -type d -printf %P'\n')
+    find "$CHROOT_TOP" -mindepth 1 -maxdepth 1 -type d ! -iname 'tmpfs' -printf %P'\n' > "$RUN_DIR/tmp"
+    while IFS= read -r i
     do
         if [ ! -e "$RUN_DIR"/"$i" ]
         then
@@ -34,7 +35,8 @@ stop() {
         ebegin "Unmounting chroot $i"
         gb-mount u "$i"
         eend $?
-    done
+    done < "$RUN_DIR/tmp"
+    rm "$RUN_DIR/tmp"
 
     if [ -n "$USE_TMPFS" ];
     then

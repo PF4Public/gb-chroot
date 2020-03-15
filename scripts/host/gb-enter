@@ -32,7 +32,7 @@ then
     EXIT_VALUE=$?
 else
     einfo "Running in chroot $1:"
-    einfo "'${@:2}'"
+    einfo "'${*:2}'"
     chroot "$CHROOT_TOP"/"$1" "${@:2}"
     EXIT_VALUE=$?
 fi
