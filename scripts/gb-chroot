@@ -35,4 +35,11 @@ stop() {
         gb-mount u "$i"
         eend $?
     done
+
+    if [ -n "$USE_TMPFS" ];
+    then
+        ebegin "Unmounting tmpfs"
+            umount -f "$CHROOT_TOP/tmpfs"
+        eend $?
+    fi
 }

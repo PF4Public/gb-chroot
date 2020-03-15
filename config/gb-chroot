@@ -11,3 +11,6 @@ CHROOT_TOP=/var/lib/gb-chroot
 
 # Where lockfiles are kept
 RUN_DIR=/run/gb-chroot
+
+# Whether to use tmpfs in chroots and its size 
+#USE_TMPFS=11G

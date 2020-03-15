@@ -15,6 +15,22 @@ if [ ! -d "$CHROOT_TOP/$2" ]; then
     exit 1
 fi
 
+if [ "$2" = "tmpfs" ]; then
+    eerror "tmpfs is not a chroot"
+    exit 1
+fi
+
+if [ -n "$USE_TMPFS" ];
+then
+    if ! findmnt -rno TARGET "$CHROOT_TOP/tmpfs" >/dev/null;
+    then
+        ebegin "Mounting tmpfs onto $CHROOT_TOP/tmpfs"
+            mkdir -p "$CHROOT_TOP/tmpfs"
+            mount -t tmpfs -o "rw,nosuid,noatime,nodev,size=$USE_TMPFS" none "$CHROOT_TOP/tmpfs"
+        eend $?
+    fi
+fi
+
 disable_interrupt()
 {
     trap '' SIGINT SIGTERM  
@@ -28,32 +44,41 @@ enable_interrupt()
 mount_it()
 {
     disable_interrupt
-    mount --types proc /proc "$CHROOT_TOP"/"$1"/proc
-    mount --rbind /sys "$CHROOT_TOP"/"$1"/sys
-    mount --rbind /dev "$CHROOT_TOP"/"$1"/dev
-    mount -o bind /tmp "$CHROOT_TOP"/"$1"/tmp
-    mount -o bind /var/cache/binpkgs/"$1" "$CHROOT_TOP"/"$1"/var/cache/binpkgs
-    mount -o bind /var/cache/distfiles "$CHROOT_TOP"/"$1"/var/cache/distfiles
-    mount -o bind /var/db/repos/gentoo "$CHROOT_TOP"/"$1"/var/db/repos/gentoo
-    mount -o bind /etc/portage/repos.conf "$CHROOT_TOP"/"$1"/etc/portage/repos.conf
-    mount -o bind /var/lib/layman "$CHROOT_TOP"/"$1"/var/lib/layman
-    mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none "$CHROOT_TOP"/"$1"/run
+    mount --types proc /proc "$CHROOT_TOP/$1/proc"
+    mount --rbind /sys "$CHROOT_TOP/$1/sys"
+    mount --rbind /dev "$CHROOT_TOP/$1/dev"
+    mount -o bind /tmp "$CHROOT_TOP/$1/tmp"
+    mount -o bind "/var/cache/binpkgs/$1" "$CHROOT_TOP/$1/var/cache/binpkgs"
+    mount -o bind /var/cache/distfiles "$CHROOT_TOP/$1/var/cache/distfiles"
+    mount -o bind /var/db/repos/gentoo "$CHROOT_TOP/$1/var/db/repos/gentoo"
+    mount -o bind /etc/portage/repos.conf "$CHROOT_TOP/$1/etc/portage/repos.conf"
+    mount -o bind /var/lib/layman "$CHROOT_TOP/$1/var/lib/layman"
+    mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none "$CHROOT_TOP/$1/run"
+    if [ -n "$USE_TMPFS" ];
+    then
+        mkdir -p "$CHROOT_TOP/tmpfs/$1"
+        mount -o bind "$CHROOT_TOP/tmpfs/$1" "$CHROOT_TOP/$1/var/tmp/portage"
+    fi
     enable_interrupt
 }
 
 unmount_it()
 {
     disable_interrupt
-    umount -fR "$CHROOT_TOP"/"$1"/dev
-    umount -fR "$CHROOT_TOP"/"$1"/sys
-    umount -f "$CHROOT_TOP"/"$1"/proc
-    umount -f "$CHROOT_TOP"/"$1"/tmp
-    umount -f "$CHROOT_TOP"/"$1"/var/cache/binpkgs
-    umount -f "$CHROOT_TOP"/"$1"/var/cache/distfiles
-    umount -f "$CHROOT_TOP"/"$1"/var/db/repos/gentoo
-    umount -f "$CHROOT_TOP"/"$1"/etc/portage/repos.conf
-    umount -f "$CHROOT_TOP"/"$1"/var/lib/layman
-    umount -f "$CHROOT_TOP"/"$1"/run
+    umount -fR "$CHROOT_TOP/$1/dev"
+    umount -fR "$CHROOT_TOP/$1/sys"
+    umount -f "$CHROOT_TOP/$1/proc"
+    umount -f "$CHROOT_TOP/$1/tmp"
+    umount -f "$CHROOT_TOP/$1/var/cache/binpkgs"
+    umount -f "$CHROOT_TOP/$1/var/cache/distfiles"
+    umount -f "$CHROOT_TOP/$1/var/db/repos/gentoo"
+    umount -f "$CHROOT_TOP/$1/etc/portage/repos.conf"
+    umount -f "$CHROOT_TOP/$1/var/lib/layman"
+    umount -f "$CHROOT_TOP/$1/run"
+    if [ -n "$USE_TMPFS" ];
+    then
+        umount -f "$CHROOT_TOP/$1/var/tmp/portage"
+    fi
     enable_interrupt
 }
 
