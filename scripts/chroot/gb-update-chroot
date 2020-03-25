@@ -23,7 +23,10 @@ check_exit()
     fi
 }
 
-eselect news read
+if [ "$(eselect news count)" != "0" ]
+then
+    eselect news read
+fi
 
 emerge --verbose --keep-going=y --usepkg=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Update"

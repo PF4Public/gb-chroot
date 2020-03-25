@@ -23,7 +23,10 @@ check_exit()
     fi
 }
 
-eselect news read
+if [ "$(eselect news count)" != "0" ]
+then
+    eselect news read
+fi
 
 rc-service rsyncd stop
 
