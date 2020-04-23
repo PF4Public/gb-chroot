@@ -40,8 +40,14 @@ emerge --depclean --exclude="sys-kernel/linux-image"
 check_exit 0 "Host depclean"
 
 gb-all gb-update-chroot
+ALL_RETVAL=$?
 
 eclean distfiles
 check_exit 0 "Host distfiles"
 
-rc-service rsyncd start
+if [ $ALL_RETVAL -ne 0 ]
+    then
+        eerror "gb-all failed, not starting rsyncd"
+    else
+        rc-service rsyncd start
+fi
