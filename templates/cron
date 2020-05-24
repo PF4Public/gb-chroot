@@ -11,7 +11,7 @@ MAILTO=root
 #00 22 * * 5 root gb-update-target 2>&1 | /usr/bin/logger -t gb-update
 
 # Updating the host every first sunday of the month
-#00 00 * * 0 root if [ $(date "+%d") -le 7 ]; then gb-update-host 2>&1 | /usr/bin/logger -t gb-update; fi
+#00 00 * * 0 root if [ $(date "+\%d") -le 7 ]; then gb-update-host 2>&1 | /usr/bin/logger -t gb-update; fi
 
 # Updating the target every first friday of the month
-#00 22 * * 5 root if [ $(date "+%d") -le 7 ]; then gb-update-target 2>&1 | /usr/bin/logger -t gb-update; fi
+#00 22 * * 5 root if [ $(date "+\%d") -le 7 ]; then gb-update-target 2>&1 | /usr/bin/logger -t gb-update; fi
