@@ -7,7 +7,8 @@
 PORTAGE_BINHOST=""
 
 FEATURES="getbinpkg"
-EMERGE_DEFAULT_OPTS="--jobs 1 --quiet-build=y --usepkg-exclude \
+EMERGE_DEFAULT_OPTS="--jobs 2 --autounmask --autounmask-write --autounmask-keep-masks \
+--quiet-build=y --usepkg-exclude \
 'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"
 
 # Adapt to your target host in case you'll
