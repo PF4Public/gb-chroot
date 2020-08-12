@@ -6,14 +6,14 @@
 # Your binhost goes here
 PORTAGE_BINHOST=""
 
-FEATURES="getbinpkg"
-EMERGE_DEFAULT_OPTS="--jobs 2 --autounmask --autounmask-write --autounmask-keep-masks \
---quiet-build=y --usepkg-exclude \
+FEATURES="getbinpkg parallel-install"
+EMERGE_DEFAULT_OPTS="--autounmask --autounmask-write --autounmask-keep-masks \
+--jobs --load-average 4 --usepkg-exclude \
 'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"
 
 # Adapt to your target host in case you'll
 # need to actually build something
-MAKEOPTS="-j4"
+MAKEOPTS="-j5 -l4"
 
 # Nice to have it on target in case you'll
 # need to actually build something

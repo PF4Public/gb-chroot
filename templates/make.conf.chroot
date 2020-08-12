@@ -9,13 +9,13 @@
 
 #'nodoc noinfo noman' are respected in chroot only
 #target should receive full packages regardless
-FEATURES="buildpkg -news nodoc noinfo noman"
-EMERGE_DEFAULT_OPTS="--jobs 2 --autounmask --autounmask-write --autounmask-keep-masks \
---quiet-build=y --buildpkg-exclude \
+FEATURES="buildpkg compress-index -news nodoc noinfo noman parallel-install"
+EMERGE_DEFAULT_OPTS="--autounmask --autounmask-write --autounmask-keep-masks \
+--jobs --load-average 8 --buildpkg-exclude \
 'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"
 
 # Adapt to your build host
-MAKEOPTS="-j8"
+MAKEOPTS="-j9 -l8"
 
 # Define ccache directory if used
 #CCACHE_DIR="/var/cache/ccache"
