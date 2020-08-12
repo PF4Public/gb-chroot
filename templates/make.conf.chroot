@@ -9,7 +9,7 @@
 
 #'nodoc noinfo noman' are respected in chroot only
 #target should receive full packages regardless
-FEATURES="buildpkg nodoc noinfo noman"
+FEATURES="buildpkg -news nodoc noinfo noman"
 EMERGE_DEFAULT_OPTS="--jobs 2 --autounmask --autounmask-write --autounmask-keep-masks \
 --quiet-build=y --buildpkg-exclude \
 'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"

@@ -28,11 +28,6 @@ rc-service rsyncd stop
 emerge --sync
 check_exit 1 "Sync"
 
-if [ "$(eselect news count)" != "0" ]
-then
-    eselect news read
-fi
-
 emerge --verbose --keep-going=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Host update"
 
