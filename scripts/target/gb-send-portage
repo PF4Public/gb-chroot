@@ -18,6 +18,10 @@ ebegin "Sending savedconfig"
 scp -r /etc/portage/savedconfig "${SCP_HOST}":"${CHROOT_TOP}"/"${TARGET_CHROOT}"/etc/portage
 eend $? "Failed"
 
+ebegin "Sending env"
+scp -r /etc/portage/env "${SCP_HOST}":"${CHROOT_TOP}"/"${TARGET_CHROOT}"/etc/portage
+eend $? "Failed"
+
 ebegin "Sending patches"
 scp -r /etc/portage/patches "${SCP_HOST}":"${CHROOT_TOP}"/"${TARGET_CHROOT}"/etc/portage
 eend $? "Failed"
