@@ -27,6 +27,12 @@ ebegin "Unpacking $(ls "$CHROOT_TOP"/*"$2"-[0-9]*)"
 )
 eend $?
 
+if [ -n "$3" ]
+then
+    ROOT=$CHROOT_TOP/$1 emerge --usepkgonly --oneshot --nodeps app-emulation/qemu
+    echo app-emulation/qemu >> "$CHROOT_TOP/$1/var/lib/portage/world"
+fi
+
 ebegin "Cleaning /dev"
 (
     cd "$CHROOT_TOP"/"$1"/dev || exit

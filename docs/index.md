@@ -2,7 +2,7 @@
 A more detailed documentation follows, starting from [Contents](#Contents) section.
 
 To get things moving follow these steps:
-* Install **gb-chroot** with `host` USE flag on _host_ and without it into _target_ system 
+* Install **gb-chroot** with `host` USE flag on _host_ and without it into _target_ system
 * Configure `/etc/conf.d/gb-chroot` at the _host_ and `/etc/gb-chroot.conf` at the _target_
 * With `gb-install core2 amd64` you can create new chroot, named **core2** and using **amd64** stage3 (should be already downloaded) as a source
 * Configure the just-created _chroot_ as required
@@ -36,11 +36,11 @@ To get things moving follow these steps:
 
 **Target** is a system, which benefits from building `binpkgs` elsewhere. Could be a number of similar systems, sharing portage configuration.
 
-**Chroot** is a chroot environment, created within _host_ system. It is a replica of _target_ system in a way that it has identical configuration and all the packages, that are present on a _target_. 
+**Chroot** is a chroot environment, created within _host_ system. It is a replica of _target_ system in a way that it has identical configuration and all the packages, that are present on a _target_.
 # Prerequisites
 If you're planning to compile binpkgs for a different architecture, you might require qemu, supporting user-mode.
 
-If your _host_ is a kvm-guest and you're plannig using qemu user-mode, you might need to enable nested virtualization.
+If your _host_ is a kvm-guest, you might need to enable nested virtualization.
 # Installation
 [gb-chroot](https://github.com/PF4Public/gentoo-overlay/tree/master/app-admin/gb-chroot) could be found in [::pf4public](https://github.com/PF4Public/gentoo-overlay/) Gentoo overlay.
 
@@ -48,6 +48,7 @@ If your _host_ is a kvm-guest and you're plannig using qemu user-mode, you might
 # Available scripts
 
 # Creating chroot
+* A chroot for a different CPU model should have a qemu binary to function. Append `qemu` to `gb-install` invocation, for example: `gb-install arm32 armv7a_hardfp qemu`. This will install into chroot qemu from a host binpkg created prior with `quickpkg app-emulation/qemu`
 # Managing chroot
 # **gb-chroot** service
 # Managing target
@@ -55,5 +56,4 @@ If your _host_ is a kvm-guest and you're plannig using qemu user-mode, you might
 # Emerging packages
 # Using ccache
 # Building Linux kernel
-
-
+UNINSTALL_IGNORE="/var/run /var/lock"
