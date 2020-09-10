@@ -14,6 +14,8 @@ EMERGE_DEFAULT_OPTS="--autounmask --autounmask-write --autounmask-keep-masks \
 --jobs --load-average 8 --buildpkg-exclude \
 'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"
 
+#-j* -l* makes system more responsive, but compile time lengthtens
+#-j* keeps tasks running no matter what
 # Adapt to your build host
 MAKEOPTS="-j9 -l8"
 
