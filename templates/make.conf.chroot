@@ -11,13 +11,14 @@
 #target should receive full packages regardless
 FEATURES="buildpkg compress-index -news nodoc noinfo noman parallel-install"
 EMERGE_DEFAULT_OPTS="--autounmask --autounmask-write --autounmask-keep-masks \
---jobs --load-average 8 --buildpkg-exclude \
+--jobs --load-average 9 --buildpkg-exclude \
 'sys-kernel/gentoo-sources sys-kernel/linux-firmware sys-firmware/* virtual/* */*-bin acct-*/*'"
 
-#-j* -l* makes system more responsive, but compile time lengthtens
-#-j* keeps tasks running no matter what
 # Adapt to your build host
-MAKEOPTS="-j9 -l8"
+#-jn -ln+1 keeps n tasks running untill load is n+1, good for parallel builds with unrestricted 'emerge --jobs'
+#-jn+1 -ln makes system more responsive, but compile time lengthtens
+#-jn keeps n tasks running no matter what
+MAKEOPTS="-j8 -l9"
 
 # Define ccache directory if used
 #CCACHE_DIR="/var/cache/ccache"
