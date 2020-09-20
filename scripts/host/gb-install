@@ -10,7 +10,11 @@ fi
 
 source /etc/conf.d/gb-chroot
 
-#TODO check if exists
+if [ -d "$CHROOT_TOP/$1" ]; then
+    eerror "Chroot \"$1\" already exists."
+    exit 1
+fi
+
 einfo "Creating $CHROOT_TOP/$1"
 mkdir "$CHROOT_TOP"/"$1"
 
