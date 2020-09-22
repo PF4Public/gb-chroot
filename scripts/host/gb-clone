@@ -1,0 +1,75 @@
+#!/bin/bash
+
+if [ -e /lib/gentoo/functions.sh ]
+then
+    source /lib/gentoo/functions.sh
+elif [ -e /etc/init.d/functions.sh ]
+then
+    source /etc/init.d/functions.sh
+fi
+
+source /etc/conf.d/gb-chroot
+
+if [ ! -d "$CHROOT_TOP/$1" ]; then
+    eerror "Chroot \"$1\" does not exist."
+    exit 1
+fi
+
+if [ "$1" = "tmpfs" ]; then
+    eerror "tmpfs is not a chroot"
+    exit 1
+fi
+
+if [ -d "$CHROOT_TOP/$2" ]; then
+    eerror "Chroot \"$2\" already exists."
+    exit 1
+fi
+
+einfo "Creating $CHROOT_TOP/$2"
+mkdir "$CHROOT_TOP"/"$2"
+
+ebegin "Cloning $1 into $2"
+    rsync -a "$CHROOT_TOP/$1/" "$CHROOT_TOP/$2/" \
+        --info=progress2 \
+        --exclude proc \
+        --exclude sys \
+        --exclude dev \
+        --exclude tmp \
+        --exclude 'var/cache/binpkgs' \
+        --exclude 'var/cache/distfiles' \
+        --exclude 'var/db/repos/gentoo' \
+        --exclude 'etc/portage/repos.conf' \
+        --exclude 'var/lib/layman' \
+        --exclude run
+eend $?
+
+einfo "Re-creating folders"
+(
+    mkdir -p "$CHROOT_TOP/$2/proc"
+    mkdir -p "$CHROOT_TOP/$2/sys"
+    mkdir -p "$CHROOT_TOP/$2/dev"
+    mkdir -p "$CHROOT_TOP/$2/tmp"
+    mkdir -p "$CHROOT_TOP/$2/var/cache/binpkgs"
+    mkdir -p "$CHROOT_TOP/$2/var/cache/distfiles"
+    mkdir -p "$CHROOT_TOP/$2/var/db/repos/gentoo"
+    mkdir -p "$CHROOT_TOP/$2/etc/portage/repos.conf"
+    mkdir -p "$CHROOT_TOP/$2/var/lib/layman"
+    mkdir -p "$CHROOT_TOP/$2/run"
+)
+
+einfo "Copying binpkgs"
+(
+    mkdir /var/cache/binpkgs/"$2"
+    rsync -a "/var/cache/binpkgs/$1/" "/var/cache/binpkgs/$2/"
+)
+
+einfo "Cleaning portage sets"
+(
+    rm "$CHROOT_TOP"/"$2"/etc/portage/sets/*
+    : > "$CHROOT_TOP/$2/var/lib/portage/world_sets"
+)
+
+einfo "Updating /etc/profile"
+(
+    sed -i "s/\($1\)/$2/" "$CHROOT_TOP"/"$2"/etc/profile
+)
