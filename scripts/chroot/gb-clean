@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -e /lib/gentoo/functions.sh ]
+then
+    source /lib/gentoo/functions.sh
+elif [ -e /etc/init.d/functions.sh ]
+then
+    source /etc/init.d/functions.sh
+fi
+
+ebegin "Cleaning /var/tmp/portage/"
+    rm -rf /var/tmp/portage/*
+eend $?
