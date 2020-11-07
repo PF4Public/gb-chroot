@@ -11,6 +11,7 @@ fi
 source /etc/conf.d/gb-chroot
 
 EXIT_CODE=0
+FAILED_CHROOTS=""
 
 for i in $UPDATE_CHROOT
 do
@@ -21,7 +22,13 @@ do
         then
             eerror "$i failed"
             EXIT_CODE=$RETVAL
-    fi    
+            FAILED_CHROOTS+="\'$i\' "
+    fi
 done
+
+if [ $EXIT_CODE -ne 0 ]
+    then
+        eerror "${FAILED_CHROOTS}failed"
+fi
 
 exit $EXIT_CODE
