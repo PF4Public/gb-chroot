@@ -1,0 +1,54 @@
+#!/bin/bash
+
+if [ -e /etc/conf.d/gb-chroot ]
+then
+    source /etc/conf.d/gb-chroot
+fi
+
+_gb-clone_completions()
+{
+    if [ "${COMP_CWORD}" -ge 2 ]; then
+        return
+    else
+        COMPREPLY=(
+            $(compgen -W "$(find $CHROOT_TOP -mindepth 1 -maxdepth 1 -type d ! -iname 'tmpfs' -printf %P' ')" -- "${COMP_WORDS[COMP_CWORD]}")
+        )
+    fi
+}
+
+complete -F _gb-clone_completions gb-clone
+
+_gb-enter_completions()
+{
+    # echo -n "${COMP_CWORD}"
+    if [ "${COMP_CWORD}" -ge 3 ]; then
+        return
+    elif [ "${COMP_CWORD}" == "2" ]; then
+        COMPREPLY=(
+            $(chroot $CHROOT_TOP/${COMP_WORDS[1]} bash -c "compgen -bc ${COMP_WORDS[COMP_CWORD]}")
+        )
+    else
+        COMPREPLY=(
+            $(compgen -W "$(find $CHROOT_TOP -mindepth 1 -maxdepth 1 -type d ! -iname 'tmpfs' -printf %P' ')" -- "${COMP_WORDS[COMP_CWORD]}")
+        )
+    fi
+}
+
+complete -F _gb-enter_completions gb-enter
+
+_gb-all_completions()
+{
+    # echo -n "${COMP_CWORD}"
+    if [ "${COMP_CWORD}" -ge 2 ]; then
+        return
+    elif [ "${COMP_CWORD}" == "1" ]; then
+        DIRS=(
+            $(find $CHROOT_TOP -mindepth 1 -maxdepth 1 -type d ! -iname 'tmpfs' -printf %P' ')
+        )
+        COMPREPLY=(
+            $(chroot $CHROOT_TOP/${DIRS} bash -c "compgen -bc ${COMP_WORDS[COMP_CWORD]}")
+        )
+    fi
+}
+
+complete -F _gb-all_completions gb-all
