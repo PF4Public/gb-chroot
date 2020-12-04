@@ -23,7 +23,7 @@ source /etc/gb-chroot.conf
 ssh -t "${SCP_HOST}" gb-enter "${TARGET_CHROOT}" equery u "${@:1}"
 check_exit "equery u"
 
-ssh -t "${SCP_HOST}" gb-enter "${TARGET_CHROOT}" emerge -v1 --autounmask --autounmask-write "${@:1}"
+ssh -t "${SCP_HOST}" gb-enter "${TARGET_CHROOT}" emerge -v1 --autounmask --autounmask-continue "${@:1}"
 check_exit "emerge in chroot"
 
 emerge -av --autounmask "${@:1}"
