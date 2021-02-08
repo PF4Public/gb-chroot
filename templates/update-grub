@@ -1,0 +1,7 @@
+# This file needs to be copied into /etc/portage/env/sys-kernel/linux-image
+# in order to update grub.cfg after each merge of linux-image
+
+post_pkg_postinst () {
+	elog "Updating grub.cfg"
+	grub-mkconfig -o /boot/grub/grub.cfg
+}
