@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -e /lib/gentoo/functions.sh ]
+then
+    source /lib/gentoo/functions.sh
+elif [ -e /etc/init.d/functions.sh ]
+then
+    source /etc/init.d/functions.sh
+fi
+
+check_exit()
+{
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]
+    then
+        eerror "$1 failed"
+        exit $RETVAL
+    fi
+}
+
+gb-enter "$1" emerge -v1 --autounmask --autounmask-continue "${@:2}"
+check_exit "emerge in chroot $1"

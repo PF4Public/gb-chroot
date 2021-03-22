@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ -e /lib/gentoo/functions.sh ]
+then
+    source /lib/gentoo/functions.sh
+elif [ -e /etc/init.d/functions.sh ]
+then
+    source /etc/init.d/functions.sh
+fi
+
+source /etc/conf.d/gb-chroot
+
+EXIT_CODE=0
+FAILED_CHROOTS=""
+
+for i in $UPDATE_CHROOT
+do
+    gb-emerge "$i" "${@:1}"
+
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]
+        then
+            eerror "$i failed"
+            EXIT_CODE=$RETVAL
+            FAILED_CHROOTS+="\'$i\' "
+    fi
+done
+
+if [ $EXIT_CODE -ne 0 ]
+    then
+        eerror "${FAILED_CHROOTS}failed"
+fi
+
+exit $EXIT_CODE
