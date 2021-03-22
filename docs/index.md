@@ -54,6 +54,9 @@ If your _host_ is a kvm-guest, you might need to enable nested virtualization.
 # Managing target
 # Managing host
 # Emerging packages
+USE=-pgo gb-enter haswell emerge ungoogled-chromium
+USE=-pgo gb-emerge haswell ungoogled-chromium
+USE=-pgo gb-emerge-all ungoogled-chromium
 # Using ccache
 # Building Linux kernel
 UNINSTALL_IGNORE="/var/run /var/lock"
