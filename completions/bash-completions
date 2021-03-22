@@ -52,3 +52,17 @@ _gb-all_completions()
 }
 
 complete -F _gb-all_completions gb-all
+
+_gb-emerge_completions()
+{
+    # echo -n "${COMP_CWORD}"
+    if [ "${COMP_CWORD}" -ge 2 ]; then
+        return
+    else
+        COMPREPLY=(
+            $(compgen -W "$(find $CHROOT_TOP -mindepth 1 -maxdepth 1 -type d ! -iname 'tmpfs' -printf %P' ')" -- "${COMP_WORDS[COMP_CWORD]}")
+        )
+    fi
+}
+
+complete -F _gb-emerge_completions gb-emerge
