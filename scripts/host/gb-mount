@@ -33,12 +33,12 @@ fi
 
 disable_interrupt()
 {
-    trap '' SIGINT SIGTERM  
+    trap '' SIGINT SIGTERM
 }
 
 enable_interrupt()
 {
-    trap SIGINT SIGTERM  
+    trap SIGINT SIGTERM
 }
 
 mount_it()
@@ -51,6 +51,7 @@ mount_it()
     mount -o bind "/var/cache/binpkgs/$1" "$CHROOT_TOP/$1/var/cache/binpkgs"
     mount -o bind /var/cache/distfiles "$CHROOT_TOP/$1/var/cache/distfiles"
     mount -o bind /var/db/repos/gentoo "$CHROOT_TOP/$1/var/db/repos/gentoo"
+    mount -o bind /var/db/repos/crossdev "$CHROOT_TOP/$1/var/db/repos/crossdev"
     mount -o bind /etc/portage/repos.conf "$CHROOT_TOP/$1/etc/portage/repos.conf"
     mount -o bind /var/lib/layman "$CHROOT_TOP/$1/var/lib/layman"
     mount -t tmpfs -o nosuid,nodev,noexec,mode=755 none "$CHROOT_TOP/$1/run"
@@ -72,6 +73,7 @@ unmount_it()
     umount -f "$CHROOT_TOP/$1/var/cache/binpkgs"
     umount -f "$CHROOT_TOP/$1/var/cache/distfiles"
     umount -f "$CHROOT_TOP/$1/var/db/repos/gentoo"
+    umount -f "$CHROOT_TOP/$1/var/db/repos/crossdev"
     umount -f "$CHROOT_TOP/$1/etc/portage/repos.conf"
     umount -f "$CHROOT_TOP/$1/var/lib/layman"
     umount -f "$CHROOT_TOP/$1/run"
@@ -86,19 +88,19 @@ mkdir -p "$RUN_DIR"
 
 (
     flock -x -w 60 200
-    
+
     if [ ! -e "$RUN_DIR"/"$2" ]
     then
         touch "$RUN_DIR"/"$2"
     fi
-    
+
     COUNT=$(<"$RUN_DIR"/"$2")
-    
+
     if [ -z "$COUNT" ]
     then
         COUNT=0
     fi
-    
+
     if [ "$1" = "m" ]
     then
         if [ $COUNT -lt 1 ]
@@ -119,5 +121,5 @@ mkdir -p "$RUN_DIR"
         fi
         echo "$COUNT" > "$RUN_DIR"/"$2"
     fi
-    
+
 ) 200>"$RUN_DIR"/"$2".lock

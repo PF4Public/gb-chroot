@@ -65,9 +65,10 @@ einfo "Copying resolv.conf"
     cp -pf --dereference /etc/resolv.conf "$CHROOT_TOP"/"$1"/etc/
 )
 
-einfo "Creating portage directory"
+einfo "Creating portage directories"
 (
     mkdir "$CHROOT_TOP"/"$1"/var/db/repos/gentoo
+    mkdir "$CHROOT_TOP"/"$1"/var/db/repos/crossdev
 )
 
 einfo "Creating layman directory"
