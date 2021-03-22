@@ -18,20 +18,25 @@ stop() {
             einfo "Skipping $i"
             continue
         fi
-        
+
         COUNT=$(<"$RUN_DIR"/"$i")
-        
+
         if [ -z "$COUNT" ]
         then
             COUNT=0
         fi
-        
+
         if [ $COUNT -eq 0 ]
         then
             einfo "Skipping $i"
             continue
         fi
-        
+
+        if [ $COUNT -gt 1 ]
+        then
+            ewarn "Is $i still used? Unmounting anyway."
+            echo "1" > "$RUN_DIR"/"$i"
+        fi
         ebegin "Unmounting chroot $i"
         gb-mount u "$i"
         eend $?
