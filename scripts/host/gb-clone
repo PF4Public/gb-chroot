@@ -31,17 +31,17 @@ mkdir "$CHROOT_TOP"/"$2"
 ebegin "Cloning $1 into $2"
     rsync -a "$CHROOT_TOP/$1/" "$CHROOT_TOP/$2/" \
         --info=progress2 \
-        --exclude proc \
-        --exclude sys \
-        --exclude dev \
-        --exclude tmp \
-        --exclude 'var/cache/binpkgs' \
-        --exclude 'var/cache/distfiles' \
-        --exclude 'var/db/repos/gentoo' \
-        --exclude 'var/db/repos/crossdev' \
-        --exclude 'etc/portage/repos.conf' \
-        --exclude 'var/lib/layman' \
-        --exclude run
+        --exclude '/proc' \
+        --exclude '/sys' \
+        --exclude '/dev' \
+        --exclude '/tmp' \
+        --exclude '/var/cache/binpkgs' \
+        --exclude '/var/cache/distfiles' \
+        --exclude '/var/db/repos/gentoo' \
+        --exclude '/var/db/repos/crossdev' \
+        --exclude '/etc/portage/repos.conf' \
+        --exclude '/var/lib/layman' \
+        --exclude '/run'
 eend $?
 
 einfo "Re-creating folders"
