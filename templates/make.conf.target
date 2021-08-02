@@ -28,3 +28,13 @@ PORTAGE_NICENESS="15"
 #FEATURES="ccache"
 # Alternatively it is possible to source the supplied gb-ccache
 # which will enable ccache for the current session
+
+# You may keep only the essential parts of portage on target with
+#PORTAGE_RSYNC_EXTRA_OPTS="
+#--include='/profiles**' --include='/licenses**' --include='/eclass**'
+#--include='/sys-firmware**' --include='/virtual**' --include='/acct-**'
+#--include='/sys-kernel' --include='/sys-kernel/linux-firmware'
+#--include='/sys-kernel/linux-firmware/**'
+#--exclude=*"
+# For it to work you might need to disable manifest verification in repos.conf
+#sync-rsync-verify-metamanifest = no

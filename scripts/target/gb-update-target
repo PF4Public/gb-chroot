@@ -35,5 +35,8 @@ check_exit 0 "Depclean"
 eclean --deep packages
 check_exit 0 "Clean packages"
 
-eclean --deep distfiles
+# If portage tree is trimmed with PORTAGE_RSYNC_EXTRA_OPTS
+# eclean will spam package names as they are
+# unavailable in trimmed portage tree, so quiet it
+eclean --quiet --deep distfiles
 check_exit 0 "Clean distfiles"
