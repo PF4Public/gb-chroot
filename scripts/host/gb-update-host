@@ -28,6 +28,9 @@ rc-service rsyncd stop
 emerge --sync
 check_exit 1 "Sync"
 
+emerge --noreplace --oneshot sys-apps/portage
+check_exit 1 "Updating host's portage"
+
 emerge --verbose --keep-going=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Host update"
 

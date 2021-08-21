@@ -26,6 +26,9 @@ check_exit()
 emerge --sync
 check_exit 1 "Sync"
 
+emerge --noreplace --oneshot sys-apps/portage
+check_exit 1 "Updating portage"
+
 emerge --verbose --keep-going=y --binpkg-changed-deps=n --update --deep --changed-use @world
 check_exit 1 "Update"
 
