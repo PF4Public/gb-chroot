@@ -30,8 +30,12 @@ rc-service rsyncd stop
 emerge --sync
 check_exit 1 "Sync"
 
-emerge --noreplace --oneshot sys-apps/portage
-check_exit 1 "Updating host's portage"
+want_update=$(emerge --pretend --oneshot sys-apps/portage)
+if [[ $want_update =~ \[ebuild[^\]]+U[^\]]+\][[:space:]]+sys-apps\/portage ]]
+then
+	emerge --oneshot sys-apps/portage
+	check_exit 1 "Updating host's portage"
+fi
 
 emerge --verbose --keep-going=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Host update"
