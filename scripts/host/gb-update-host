@@ -8,6 +8,8 @@ then
     source /etc/init.d/functions.sh
 fi
 
+source /etc/conf.d/gb-chroot
+
 check_exit()
 {
     RETVAL=$?
@@ -34,7 +36,7 @@ check_exit 1 "Updating host's portage"
 emerge --verbose --keep-going=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Host update"
 
-emerge --depclean --exclude="sys-kernel/linux-image"
+emerge --depclean --exclude="$DEPCLEAN_EXCLUDE"
 check_exit 0 "Host depclean"
 
 gb-all gb-update-chroot

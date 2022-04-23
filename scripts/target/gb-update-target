@@ -8,6 +8,8 @@ then
     source /etc/init.d/functions.sh
 fi
 
+source /etc/gb-chroot.conf
+
 check_exit()
 {
     RETVAL=$?
@@ -32,7 +34,7 @@ check_exit 1 "Updating portage"
 emerge --verbose --keep-going=y --binpkg-changed-deps=n --update --deep --changed-use @world
 check_exit 1 "Update"
 
-emerge --depclean --with-bdeps=n --exclude="sys-kernel/linux-image"
+emerge --depclean --with-bdeps=n --exclude="$DEPCLEAN_EXCLUDE"
 check_exit 0 "Depclean"
 
 eclean --deep packages

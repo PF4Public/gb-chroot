@@ -8,3 +8,6 @@ CHROOT_TOP=/var/lib/gb-chroot
 
 # Which chroot corresponds to this target
 TARGET_CHROOT="core2"
+
+# Exclude some packages from automatic depclean'ing
+DEPCLEAN_EXCLUDE="sys-kernel/linux-image dev-db/postgresql"
