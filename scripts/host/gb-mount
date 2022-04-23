@@ -87,7 +87,7 @@ unmount_it()
 mkdir -p "$RUN_DIR"
 
 (
-    flock -x -w 60 200
+    flock --exclusive --wait 60 200
 
     if [ ! -e "$RUN_DIR"/"$2" ]
     then
