@@ -23,8 +23,12 @@ check_exit()
     fi
 }
 
-emerge --noreplace --oneshot sys-apps/portage
-check_exit 1 "Updating portage"
+want_update=$(emerge --pretend --oneshot sys-apps/portage)
+if [[ $want_update =~ \[ebuild[^\]]+U[^\]]+\][[:space:]]+sys-apps\/portage ]]
+then
+	emerge --oneshot sys-apps/portage
+	check_exit 1 "Updating portage"
+fi
 
 emerge --verbose --keep-going=y --usepkg=y --update --deep --changed-use --with-bdeps=y @world
 check_exit 1 "Update"
