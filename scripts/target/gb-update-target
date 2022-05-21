@@ -28,6 +28,13 @@ check_exit()
 emerge --sync
 check_exit 1 "Sync"
 
+want_update=$(emerge --pretend --oneshot sys-libs/glibc)
+if [[ $want_update =~ \[ebuild[^\]]+U[^\]]+\][[:space:]]+sys-libs\/glibc ]]
+then
+	emerge --oneshot sys-libs/glibc
+	check_exit 1 "Updating glibc"
+fi
+
 want_update=$(emerge --pretend --oneshot sys-apps/portage)
 if [[ $want_update =~ \[ebuild[^\]]+U[^\]]+\][[:space:]]+sys-apps\/portage ]]
 then
