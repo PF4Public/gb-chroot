@@ -34,7 +34,8 @@ eend $?
 if [ -n "$3" ]
 then
     ROOT=$CHROOT_TOP/$1 emerge --usepkgonly --oneshot --nodeps app-emulation/qemu
-    echo app-emulation/qemu >> "$CHROOT_TOP/$1/var/lib/portage/world"
+    mkdir "$CHROOT_TOP"/"$1"/etc/portage/profile
+    qlist -Iv|grep -E app-emulation/qemu >> "$CHROOT_TOP/$1/etc/portage/profile/package.provided"
 fi
 
 ebegin "Cleaning /dev"
